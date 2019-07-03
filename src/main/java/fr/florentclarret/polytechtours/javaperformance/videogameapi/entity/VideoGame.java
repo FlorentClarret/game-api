@@ -1,5 +1,7 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -17,10 +19,8 @@ import javax.persistence.Table;
 @RequiredArgsConstructor
 @ToString
 @Table(name = "video_game")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = VideoGame.class)
 public final class VideoGame extends BaseEntity {
-
-    @Column(name = "name")
-    private String name;
 
     @Column(name = "year")
     private int year;

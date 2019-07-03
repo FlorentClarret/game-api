@@ -1,5 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,17 +31,25 @@ public abstract class BaseEntity {
     @Column(name = "version")
     @Getter
     @Setter
+    @JsonIgnore
     protected Long version;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createDate")
     @Getter
+    @Setter
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updateDate")
     @Getter
+    @Setter
     private Date updateDate;
+
+    @Column(name = "name")
+    @Getter
+    @Setter
+    protected String name;
 
     @PrePersist
     protected void onCreate() {

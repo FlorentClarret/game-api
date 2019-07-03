@@ -1,6 +1,10 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
-import org.hamcrest.collection.IsEmptyCollection;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import java.util.List;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -22,24 +25,34 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class PublisherControllerTest {
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final ObjectReader OBJECT_READER = OBJECT_MAPPER.readerFor(Publisher.class);
+
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void testGetPublisher() throws Exception {
-        this.mockMvc.perform(get("/api/v1.0/publisher/1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1)))
-                .andExpect(jsonPath("name", is("publisher1")))
-                .andExpect(jsonPath("videoGameList", IsEmptyCollection.empty()))
-                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/publisher/1")))
-                .andExpect(jsonPath("_links.publisher.href", is("http://localhost/api/v1.0/publisher/")));
+    public void testGetPublisherWithoutGames() throws Exception {
+        Publisher publisher = OBJECT_READER.readValue(this.mockMvc.perform(get("/api/v1.0/publisher/2")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
 
-        this.mockMvc.perform(get("/api/v1.0/publisher/2")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(2)))
-                .andExpect(jsonPath("name", is("publisher2")))
-                .andExpect(jsonPath("videoGameList", IsEmptyCollection.empty()))
-                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/publisher/2")))
-                .andExpect(jsonPath("_links.publisher.href", is("http://localhost/api/v1.0/publisher/")));
+        Assert.assertEquals(2, publisher.getId().intValue());
+        Assert.assertEquals("publisher2", publisher.getName());
+        Assert.assertNotNull(publisher.getCreateDate());
+        Assert.assertNotNull(publisher.getUpdateDate());
+        Assert.assertTrue(publisher.getVideoGameList().isEmpty());
+    }
+
+    @Test
+    public void testGetPublisherWithGames() throws Exception {
+        Publisher publisher = OBJECT_READER.readValue(this.mockMvc.perform(get("/api/v1.0/publisher/1")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString());
+
+        Assert.assertEquals(1, publisher.getId().intValue());
+        Assert.assertEquals("publisher1", publisher.getName());
+        Assert.assertNotNull(publisher.getCreateDate());
+        Assert.assertNotNull(publisher.getUpdateDate());
+        Assert.assertEquals(1, publisher.getVideoGameList().size());
+        Assert.assertEquals(2, publisher.getVideoGameList().get(0).getId().intValue());
     }
 
     @Test
@@ -50,18 +63,11 @@ public class PublisherControllerTest {
 
     @Test
     public void testGetAllPublishers() throws Exception {
-        this.mockMvc.perform(get("/api/v1.0/publisher/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("_embedded.publisherList", hasSize(2)))
-                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/publisher/")))
-                .andExpect(jsonPath("_embedded.publisherList[0].id", is(1)))
-                .andExpect(jsonPath("_embedded.publisherList[0].name", is("publisher1")))
-                .andExpect(jsonPath("_embedded.publisherList[0].videoGameList", IsEmptyCollection.empty()))
-                .andExpect(jsonPath("_embedded.publisherList[0]._links.self.href", is("http://localhost/api/v1.0/publisher/1")))
-                .andExpect(jsonPath("_embedded.publisherList[0]._links.publisher.href", is("http://localhost/api/v1.0/publisher/")))
-                .andExpect(jsonPath("_embedded.publisherList[1].id", is(2)))
-                .andExpect(jsonPath("_embedded.publisherList[1].name", is("publisher2")))
-                .andExpect(jsonPath("_embedded.publisherList[1].videoGameList", IsEmptyCollection.empty()))
-                .andExpect(jsonPath("_embedded.publisherList[1]._links.self.href", is("http://localhost/api/v1.0/publisher/2")))
-                .andExpect(jsonPath("_embedded.publisherList[1]._links.publisher.href", is("http://localhost/api/v1.0/publisher/")));
+        final List<Publisher> publishers = OBJECT_MAPPER.readValue(this.mockMvc.perform(get("/api/v1.0/publisher/")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString(), new TypeReference<List<Publisher>>() {
+        });
+
+        Assert.assertEquals(2, publishers.size());
+        Assert.assertEquals(1, publishers.get(0).getId().intValue());
+        Assert.assertEquals(2, publishers.get(1).getId().intValue());
     }
 }
