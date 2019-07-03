@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/platform/")
-public final class PlatformController {
+public class PlatformController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformController.class);
 

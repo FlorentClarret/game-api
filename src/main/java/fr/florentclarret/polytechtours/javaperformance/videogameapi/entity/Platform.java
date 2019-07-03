@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,5 +32,5 @@ public final class Platform {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "platform")
-    private List<VideoGame> videoGameList;
+    private List<VideoGame> videoGameList = new ArrayList<>();
 }

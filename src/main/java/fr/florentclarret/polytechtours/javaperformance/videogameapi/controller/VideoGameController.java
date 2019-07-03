@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/videogame/")
-public final class VideoGameController {
+public class VideoGameController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoGameController.class);
 

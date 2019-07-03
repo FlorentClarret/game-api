@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/publisher/")
-public final class PublisherController {
+public class PublisherController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PublisherController.class);
 
