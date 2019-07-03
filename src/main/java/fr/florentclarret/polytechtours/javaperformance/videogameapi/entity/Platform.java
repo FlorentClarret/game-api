@@ -9,8 +9,6 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -21,14 +19,8 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @ToString
-@EqualsAndHashCode
 @Table(name = "platform")
-public final class Platform {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
+public final class Platform extends BaseEntity {
 
     @Column(name = "name")
     private String name;

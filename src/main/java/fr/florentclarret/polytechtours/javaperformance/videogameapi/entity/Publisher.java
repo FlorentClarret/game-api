@@ -9,8 +9,6 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -21,14 +19,8 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @ToString
-@EqualsAndHashCode
 @Table(name = "publisher")
-public final class Publisher {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
+public final class Publisher extends BaseEntity {
 
     @Column(name = "name")
     private String name;

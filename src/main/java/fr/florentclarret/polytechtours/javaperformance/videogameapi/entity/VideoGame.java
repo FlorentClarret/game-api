@@ -8,8 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,14 +17,8 @@ import javax.persistence.Table;
 @Setter
 @RequiredArgsConstructor
 @ToString
-@EqualsAndHashCode
 @Table(name = "video_game")
-public final class VideoGame {
-
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
+public final class VideoGame extends BaseEntity {
 
     @Column(name = "name")
     private String name;
