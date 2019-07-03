@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 @RequiredArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Table(name = "video_game")
 public final class VideoGame {
 
     @Id

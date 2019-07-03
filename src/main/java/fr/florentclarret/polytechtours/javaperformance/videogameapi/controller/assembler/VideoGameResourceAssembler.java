@@ -1,7 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.assembler;
 
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PlatformController;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.VideoGameController;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
@@ -16,8 +15,8 @@ public final class VideoGameResourceAssembler implements ResourceAssembler<Video
     @Override
     public Resource<VideoGame> toResource(final VideoGame videoGame) {
         return new Resource<>(videoGame,
-                linkTo(methodOn(PlatformController.class).one(videoGame.getId())).withSelfRel(),
-                linkTo(methodOn(PlatformController.class).all()).withRel("videoGame"));
+                linkTo(methodOn(VideoGameController.class).one(videoGame.getId())).withSelfRel(),
+                linkTo(methodOn(VideoGameController.class).all()).withRel("videoGame"));
     }
 
 }

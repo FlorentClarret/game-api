@@ -1,7 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.assembler;
 
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PlatformController;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PublisherController;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
@@ -16,8 +15,8 @@ public final class PublisherResourceAssembler implements ResourceAssembler<Publi
     @Override
     public Resource<Publisher> toResource(final Publisher publisher) {
         return new Resource<>(publisher,
-                linkTo(methodOn(PlatformController.class).one(publisher.getId())).withSelfRel(),
-                linkTo(methodOn(PlatformController.class).all()).withRel("publisher"));
+                linkTo(methodOn(PublisherController.class).one(publisher.getId())).withSelfRel(),
+                linkTo(methodOn(PublisherController.class).all()).withRel("publisher"));
     }
 
 }

@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Table(name = "publisher")
 public final class Publisher {
 
     @Id

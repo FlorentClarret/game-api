@@ -42,7 +42,7 @@ public class PublisherController {
                 .collect(Collectors.toList());
 
         return new Resources<>(platforms,
-                linkTo(methodOn(PlatformController.class).all()).withSelfRel());
+                linkTo(methodOn(PublisherController.class).all()).withSelfRel());
     }
 
     @GetMapping(path = "{id}")

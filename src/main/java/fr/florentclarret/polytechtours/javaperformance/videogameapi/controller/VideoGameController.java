@@ -42,7 +42,7 @@ public class VideoGameController {
                 .collect(Collectors.toList());
 
         return new Resources<>(platforms,
-                linkTo(methodOn(PlatformController.class).all()).withSelfRel());
+                linkTo(methodOn(VideoGameController.class).all()).withSelfRel());
     }
 
     @GetMapping(path = "{id}")
