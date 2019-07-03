@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/platform/")
-public class PlatformController {
+public class PlatformController implements Controller<Platform> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformController.class);
 
@@ -33,6 +33,7 @@ public class PlatformController {
         this.platformResourceAssembler = platformResourceAssembler;
     }
 
+    @Override
     @GetMapping
     public Resources<Resource<Platform>> all() {
         LOGGER.trace("Method [getAll] called");
@@ -45,6 +46,7 @@ public class PlatformController {
                 linkTo(methodOn(PlatformController.class).all()).withSelfRel());
     }
 
+    @Override
     @GetMapping(path = "{id}")
     public Resource<Platform> one(@PathVariable final Long id) {
         LOGGER.trace("Method [get] with id [{}] called", id);

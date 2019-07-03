@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/publisher/")
-public class PublisherController {
+public class PublisherController implements Controller<Publisher> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PublisherController.class);
 
@@ -33,6 +33,7 @@ public class PublisherController {
         this.publisherResourceAssembler = publisherResourceAssembler;
     }
 
+    @Override
     @GetMapping
     public Resources<Resource<Publisher>> all() {
         LOGGER.trace("Method [getAll] called");
@@ -45,6 +46,7 @@ public class PublisherController {
                 linkTo(methodOn(PublisherController.class).all()).withSelfRel());
     }
 
+    @Override
     @GetMapping(path = "{id}")
     public Resource<Publisher> one(@PathVariable final Long id) {
         LOGGER.trace("Method [get] with id [{}] called", id);

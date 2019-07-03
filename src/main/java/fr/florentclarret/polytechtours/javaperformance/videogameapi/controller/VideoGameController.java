@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/videogame/")
-public class VideoGameController {
+public class VideoGameController implements Controller<VideoGame> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoGameController.class);
 
@@ -33,6 +33,7 @@ public class VideoGameController {
         this.videoGameResourceAssembler = videoGameResourceAssembler;
     }
 
+    @Override
     @GetMapping
     public Resources<Resource<VideoGame>> all() {
         LOGGER.trace("Method [getAll] called");
@@ -45,6 +46,7 @@ public class VideoGameController {
                 linkTo(methodOn(VideoGameController.class).all()).withSelfRel());
     }
 
+    @Override
     @GetMapping(path = "{id}")
     public Resource<VideoGame> one(@PathVariable final Long id) {
         LOGGER.trace("Method [get] with id [{}] called", id);
