@@ -1,8 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl;
 
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.PlatformNotFoundException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.PublisherNotFoundException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.repository.PublisherRepository;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.PublisherService;

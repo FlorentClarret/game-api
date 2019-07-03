@@ -1,6 +1,5 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
