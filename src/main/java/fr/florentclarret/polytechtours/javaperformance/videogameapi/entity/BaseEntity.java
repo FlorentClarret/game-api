@@ -2,9 +2,8 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -20,7 +19,6 @@ import javax.persistence.Version;
 import java.util.Date;
 
 @MappedSuperclass
-@NoArgsConstructor
 public abstract class BaseEntity {
 
     @Id
@@ -28,23 +26,23 @@ public abstract class BaseEntity {
     @Column(name = "id")
     @Getter
     @Setter
-    @ApiParam(hidden = true)
+    @ApiModelProperty(hidden = true)
     @JsonIgnore
-    protected Long id;
+    private Long id;
 
     @Version
     @Column(name = "version")
     @Getter
     @Setter
-    @ApiParam(hidden = true)
+    @ApiModelProperty(hidden = true)
     @JsonIgnore
-    protected Long version;
+    private Long version;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createDate")
     @Getter
     @Setter
-    @ApiParam(hidden = true)
+    @ApiModelProperty(hidden = true)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createDate;
 
@@ -52,14 +50,14 @@ public abstract class BaseEntity {
     @Column(name = "updateDate")
     @Getter
     @Setter
-    @ApiParam(hidden = true)
+    @ApiModelProperty(hidden = true)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updateDate;
 
     @Column(name = "name")
     @Getter
     @Setter
-    protected String name;
+    private String name;
 
     @PrePersist
     private void onCreate() {

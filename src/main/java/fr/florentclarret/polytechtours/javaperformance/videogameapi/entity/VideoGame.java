@@ -1,6 +1,7 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Getter
 @Setter
 @RequiredArgsConstructor
 @ToString
@@ -21,25 +21,38 @@ import javax.persistence.Table;
 public final class VideoGame extends BaseEntity {
 
     @Column(name = "year")
+    @Getter
     private Integer year;
 
     @Column(name = "critic_score")
+    @Getter
     private String criticScore;
 
     @Column(name = "user_score")
+    @Getter
     private String userScore;
 
     @Column(name = "global_sales")
+    @Getter
     private String globalSales;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private Publisher publisher;
 
     @ManyToOne
     @JoinColumn(name = "platform_id")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private Platform platform;
 
+    @ApiModelProperty(hidden = true)
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    @ApiModelProperty(hidden = true)
+    public Platform getPlatform() {
+        return platform;
+    }
 }

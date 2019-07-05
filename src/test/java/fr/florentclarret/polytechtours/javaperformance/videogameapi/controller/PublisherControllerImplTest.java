@@ -1,16 +1,23 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class PublisherControllerImplTest {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -69,5 +78,64 @@ public class PublisherControllerImplTest {
                 .andExpect(jsonPath("_embedded.publisherList[1]._links.all.href", is("http://localhost/api/v1.0/publisher/")))
                 .andExpect(jsonPath("_embedded.publisherList[1]._links.videogame").doesNotExist())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/publisher/")));
+    }
+
+    @Test
+    public void testPostEntityAlreadyExists() throws Exception {
+        final Publisher publisher = new Publisher();
+        publisher.setName("publisher1");
+        this.mockMvc.perform(post("/api/v1.0/publisher/").content(OBJECT_MAPPER.writeValueAsString(publisher)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isConflict())
+                .andExpect(content().string("The entity with name [publisher1] already exists"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testPost() throws Exception {
+        final Publisher publisher = new Publisher();
+        publisher.setName("publisher666");
+        this.mockMvc.perform(post("/api/v1.0/publisher/").content(OBJECT_MAPPER.writeValueAsString(publisher)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name", is("publisher666")))
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/publisher/3")))
+                .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/publisher/")))
+                .andExpect(jsonPath("_links.videogame").doesNotExist());
+    }
+
+    @Test
+    public void testPutEntityNotFound() throws Exception {
+        final Publisher publisher = new Publisher();
+        publisher.setName("publisher666");
+        this.mockMvc.perform(put("/api/v1.0/platform/666").content(OBJECT_MAPPER.writeValueAsString(publisher)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("Entity with id [666] not found"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testPut() throws Exception {
+        final Publisher publisher = new Publisher();
+        publisher.setName("publisher666");
+        this.mockMvc.perform(put("/api/v1.0/publisher/1").content(OBJECT_MAPPER.writeValueAsString(publisher)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name", is("publisher666")))
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/publisher/1")))
+                .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/publisher/")))
+                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/videogame/2")));
+    }
+
+    @Test
+    public void testDeleteEntityNotFound() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/publisher/666")).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("Entity with id [666] not found"));
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/platform/2")).andDo(print()).andExpect(status().isNoContent());
     }
 }

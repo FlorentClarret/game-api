@@ -1,16 +1,23 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -20,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class VideoGameControllerImplTest {
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
@@ -98,5 +107,79 @@ public class VideoGameControllerImplTest {
                 .andExpect(jsonPath("_embedded.videoGameList[2]._links.platform.href", is("http://localhost/api/v1.0/platform/1")))
                 .andExpect(jsonPath("_embedded.videoGameList[2]._links.publisher").doesNotExist())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/videogame/")));
+    }
+
+    @Test
+    public void testPostEntityAlreadyExists() throws Exception {
+        final VideoGame videoGame = new VideoGame();
+        videoGame.setName("game1");
+        this.mockMvc.perform(post("/api/v1.0/videogame/").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isConflict())
+                .andExpect(content().string("The entity with name [game1] already exists"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testPost() throws Exception {
+        final VideoGame videoGame = new VideoGame();
+        videoGame.setName("game666");
+        videoGame.setYear(2012);
+        videoGame.setCriticScore("12");
+        videoGame.setUserScore("13");
+        videoGame.setGlobalSales("14");
+        this.mockMvc.perform(post("/api/v1.0/videogame/").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name", is("game666")))
+                .andExpect(jsonPath("year", is(2012)))
+                .andExpect(jsonPath("criticScore", is("12")))
+                .andExpect(jsonPath("userScore", is("13")))
+                .andExpect(jsonPath("globalSales", is("14")))
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/videogame/4")))
+                .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/videogame/")));
+    }
+
+    @Test
+    public void testPutEntityNotFound() throws Exception {
+        final VideoGame videoGame = new VideoGame();
+        videoGame.setName("game1");
+        this.mockMvc.perform(put("/api/v1.0/platform/666").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("Entity with id [666] not found"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testPut() throws Exception {
+        final VideoGame videoGame = new VideoGame();
+        videoGame.setName("game666");
+        videoGame.setYear(2012);
+        videoGame.setCriticScore("12");
+        videoGame.setUserScore("13");
+        videoGame.setGlobalSales("14");
+        this.mockMvc.perform(put("/api/v1.0/videogame/1").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name", is("game666")))
+                .andExpect(jsonPath("year", is(2012)))
+                .andExpect(jsonPath("criticScore", is("12")))
+                .andExpect(jsonPath("userScore", is("13")))
+                .andExpect(jsonPath("globalSales", is("14")))
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/videogame/1")))
+                .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/videogame/")));
+    }
+
+    @Test
+    public void testDeleteEntityNotFound() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/videogame/666")).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("Entity with id [666] not found"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testDelete() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/videogame/3")).andDo(print()).andExpect(status().isNoContent());
     }
 }
