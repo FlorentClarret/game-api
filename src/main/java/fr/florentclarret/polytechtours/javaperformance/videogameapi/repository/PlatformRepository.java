@@ -4,4 +4,5 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platf
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlatformRepository extends JpaRepository<Platform, Long> {
+
 }

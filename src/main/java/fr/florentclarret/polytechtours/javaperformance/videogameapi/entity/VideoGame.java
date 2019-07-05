@@ -1,6 +1,7 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ import javax.persistence.Table;
 public final class VideoGame extends BaseEntity {
 
     @Column(name = "year")
-    private int year;
+    private Integer year;
 
     @Column(name = "critic_score")
     private String criticScore;
@@ -36,10 +37,12 @@ public final class VideoGame extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Publisher publisher;
 
     @ManyToOne
     @JoinColumn(name = "platform_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Platform platform;
 
 }

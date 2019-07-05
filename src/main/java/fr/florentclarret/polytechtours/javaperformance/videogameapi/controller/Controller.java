@@ -1,12 +1,12 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.BaseEntity;
-
-import java.util.List;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 
 public interface Controller<T extends BaseEntity> {
 
-    T one(final Long id);
+    Resource<T> one(final Long id);
 
-    List<T> all();
+    Resources<Resource<T>> all();
 }
