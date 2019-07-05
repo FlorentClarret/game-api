@@ -37,6 +37,7 @@ public abstract class BaseEntity {
     @Getter
     @Setter
     @ApiParam(hidden = true)
+    @JsonIgnore
     protected Long version;
 
     @Temporal(TemporalType.TIMESTAMP)
