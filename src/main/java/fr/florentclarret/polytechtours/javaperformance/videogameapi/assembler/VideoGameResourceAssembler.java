@@ -1,8 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.enums.RelType;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.PlatformControllerImpl;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.PublisherControllerImpl;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.VideoGameControllerImpl;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import org.springframework.hateoas.Resource;
@@ -21,15 +19,8 @@ public final class VideoGameResourceAssembler extends AbstractCustomResourceAsse
     @Override
     public Resource<VideoGame> toResource(final VideoGame videoGame) {
         final Resource<VideoGame> resource = super.toResource(videoGame);
-
-        if (videoGame.getPlatform() != null) {
-            resource.add(linkTo(methodOn(PlatformControllerImpl.class).one(videoGame.getPlatform().getId())).withRel(RelType.PLATFORM.getName()));
-        }
-
-        if (videoGame.getPublisher() != null) {
-            resource.add(linkTo(methodOn(PublisherControllerImpl.class).one(videoGame.getPublisher().getId())).withRel(RelType.PUBLISHER.getName()));
-        }
-
+        resource.add(linkTo(methodOn(VideoGameControllerImpl.class).getPlatform(videoGame.getId())).withRel(RelType.PLATFORM.getName()));
+        resource.add(linkTo(methodOn(VideoGameControllerImpl.class).getPublisher(videoGame.getId())).withRel(RelType.PUBLISHER.getName()));
         return resource;
     }
 }

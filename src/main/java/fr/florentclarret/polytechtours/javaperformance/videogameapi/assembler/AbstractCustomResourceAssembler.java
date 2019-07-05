@@ -2,6 +2,7 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.Controller;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.BaseEntity;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.Resources;
@@ -23,18 +24,23 @@ public abstract class AbstractCustomResourceAssembler<T extends BaseEntity> impl
     }
 
     public Resources<Resource<T>> toResources(final Collection<T> entities) {
+        return this.toResources(entities, linkTo(methodOn(controllerClass).all()).withSelfRel());
+    }
+
+    public Resources<Resource<T>> toResources(final Collection<T> entities, final Link selfLink) {
         final Collection<Resource<T>> resources = entities.stream()
                 .map(this::toResource)
                 .collect(Collectors.toList());
-
-        return new Resources<>(resources, linkTo(methodOn(controllerClass).all()).withSelfRel());
+        return new Resources<>(resources, selfLink);
     }
 
     @Override
     public Resource<T> toResource(final T entity) {
-        return new Resource<>(entity,
-                linkTo(methodOn(controllerClass).one(entity.getId())).withSelfRel(),
-                linkTo(methodOn(controllerClass).all()).withRel("all"));
+        return this.toResource(entity, linkTo(methodOn(controllerClass).one(entity.getId())).withSelfRel());
+    }
+
+    public Resource<T> toResource(final T entity, final Link selfLink) {
+        return new Resource<>(entity, selfLink, linkTo(methodOn(controllerClass).all()).withRel("all"));
     }
 
 }

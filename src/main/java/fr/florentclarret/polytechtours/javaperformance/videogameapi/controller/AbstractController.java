@@ -19,9 +19,9 @@ public abstract class AbstractController<T extends BaseEntity> implements Contro
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final EntityService<T> entityService;
+    protected final EntityService<T> entityService;
 
-    private final AbstractCustomResourceAssembler<T> resourceAssembler;
+    protected final AbstractCustomResourceAssembler<T> resourceAssembler;
 
     public AbstractController(final EntityService<T> entityService, final AbstractCustomResourceAssembler<T> resourceAssembler) {
         this.entityService = entityService;

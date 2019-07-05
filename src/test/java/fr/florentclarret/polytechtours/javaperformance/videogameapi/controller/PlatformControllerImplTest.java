@@ -41,9 +41,7 @@ public class PlatformControllerImplTest {
                 .andExpect(jsonPath("createDate").isNotEmpty())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/1")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_links.videogame", hasSize(2)))
-                .andExpect(jsonPath("_links.videogame[0].href", is("http://localhost/api/v1.0/videogame/2")))
-                .andExpect(jsonPath("_links.videogame[1].href", is("http://localhost/api/v1.0/videogame/3")));
+                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/1/videogame")));
     }
 
     @Test
@@ -61,15 +59,14 @@ public class PlatformControllerImplTest {
                 .andExpect(jsonPath("_embedded.platformList[0].createDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.platformList[0]._links.self.href", is("http://localhost/api/v1.0/platform/1")))
                 .andExpect(jsonPath("_embedded.platformList[0]._links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_embedded.platformList[0]._links.videogame", hasSize(2)))
-                .andExpect(jsonPath("_embedded.platformList[0]._links.videogame[0].href", is("http://localhost/api/v1.0/videogame/2")))
-                .andExpect(jsonPath("_embedded.platformList[0]._links.videogame[1].href", is("http://localhost/api/v1.0/videogame/3")))
+                .andExpect(jsonPath("_embedded.platformList[0]._links.videogame.href", is("http://localhost/api/v1.0/platform/1/videogame")))
                 .andExpect(jsonPath("_embedded.platformList[1].name", is("platform2")))
                 .andExpect(jsonPath("_embedded.platformList[1].updateDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.platformList[1].createDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.platformList[1]._links.self.href", is("http://localhost/api/v1.0/platform/2")))
                 .andExpect(jsonPath("_embedded.platformList[1]._links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_embedded.platformList[1]._links.videogame").doesNotExist());
+                .andExpect(jsonPath("_embedded.platformList[1]._links.videogame.href", is("http://localhost/api/v1.0/platform/2/videogame")))
+                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/")));
     }
 
     @Test
@@ -93,7 +90,7 @@ public class PlatformControllerImplTest {
                 .andExpect(jsonPath("createDate").isNotEmpty())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/3")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_links.videogame").doesNotExist());
+                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/3/videogame")));
     }
 
     @Test
@@ -117,9 +114,7 @@ public class PlatformControllerImplTest {
                 .andExpect(jsonPath("createDate").isNotEmpty())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/1")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_links.videogame", hasSize(2)))
-                .andExpect(jsonPath("_links.videogame[0].href", is("http://localhost/api/v1.0/videogame/2")))
-                .andExpect(jsonPath("_links.videogame[1].href", is("http://localhost/api/v1.0/videogame/3")));
+                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/1/videogame")));
     }
 
     @Test
@@ -132,5 +127,40 @@ public class PlatformControllerImplTest {
     @DirtiesContext
     public void testDelete() throws Exception {
         this.mockMvc.perform(delete("/api/v1.0/platform/2")).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testGetGamesNoGameFound() throws Exception {
+        this.mockMvc.perform(get("/api/v1.0/platform/2/videogame")).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("No game found for platform with id [2]"));
+    }
+
+    @Test
+    public void testGetGames() throws Exception {
+        this.mockMvc.perform(get("/api/v1.0/platform/1/videogame")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("_embedded.videoGameList", hasSize(2)))
+                .andExpect(jsonPath("_embedded.videoGameList[0].name", is("game2")))
+                .andExpect(jsonPath("_embedded.videoGameList[0].year", is(2012)))
+                .andExpect(jsonPath("_embedded.videoGameList[0].criticScore", is("2")))
+                .andExpect(jsonPath("_embedded.videoGameList[0].userScore", is("8")))
+                .andExpect(jsonPath("_embedded.videoGameList[0].globalSales", is("6.12")))
+                .andExpect(jsonPath("_embedded.videoGameList[0].updateDate").isNotEmpty())
+                .andExpect(jsonPath("_embedded.videoGameList[0].createDate").isNotEmpty())
+                .andExpect(jsonPath("_embedded.videoGameList[0]._links.self.href", is("http://localhost/api/v1.0/videogame/2")))
+                .andExpect(jsonPath("_embedded.videoGameList[0]._links.all.href", is("http://localhost/api/v1.0/videogame/")))
+                .andExpect(jsonPath("_embedded.videoGameList[0]._links.publisher.href", is("http://localhost/api/v1.0/videogame/2/publisher")))
+                .andExpect(jsonPath("_embedded.videoGameList[0]._links.platform.href", is("http://localhost/api/v1.0/videogame/2/platform")))
+                .andExpect(jsonPath("_embedded.videoGameList[1].name", is("game3")))
+                .andExpect(jsonPath("_embedded.videoGameList[1].year", is(1950)))
+                .andExpect(jsonPath("_embedded.videoGameList[1].criticScore", is("5")))
+                .andExpect(jsonPath("_embedded.videoGameList[1].userScore", is("5")))
+                .andExpect(jsonPath("_embedded.videoGameList[1].globalSales", is("4")))
+                .andExpect(jsonPath("_embedded.videoGameList[1].updateDate").isNotEmpty())
+                .andExpect(jsonPath("_embedded.videoGameList[1].createDate").isNotEmpty())
+                .andExpect(jsonPath("_embedded.videoGameList[1]._links.self.href", is("http://localhost/api/v1.0/videogame/3")))
+                .andExpect(jsonPath("_embedded.videoGameList[1]._links.all.href", is("http://localhost/api/v1.0/videogame/")))
+                .andExpect(jsonPath("_embedded.videoGameList[1]._links.platform.href", is("http://localhost/api/v1.0/videogame/3/platform")))
+                .andExpect(jsonPath("_embedded.videoGameList[1]._links.publisher.href", is("http://localhost/api/v1.0/videogame/3/publisher")))
+                .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/1/videogame")));
     }
 }
