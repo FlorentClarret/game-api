@@ -59,7 +59,7 @@ public class VideoGameControllerTest {
     @Test
     public void testGetUnknownGame() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/videogame/666")).andDo(print()).andExpect(status().isNotFound())
-                .andExpect(content().string("Video game with id [666] not found"));
+                .andExpect(content().string("Entity with id [666] not found"));
     }
 
     @Test

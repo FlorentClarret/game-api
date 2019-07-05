@@ -2,7 +2,7 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.PlatformResourceAssembler;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.PlatformService;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.PlatformServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
@@ -18,11 +18,11 @@ public class PlatformController implements Controller<Platform> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlatformController.class);
 
-    private final PlatformService platformService;
+    private final PlatformServiceImpl platformService;
 
     private final PlatformResourceAssembler platformResourceAssembler;
 
-    public PlatformController(final PlatformService platformService, final PlatformResourceAssembler platformResourceAssembler) {
+    public PlatformController(final PlatformServiceImpl platformService, final PlatformResourceAssembler platformResourceAssembler) {
         this.platformService = platformService;
         this.platformResourceAssembler = platformResourceAssembler;
     }

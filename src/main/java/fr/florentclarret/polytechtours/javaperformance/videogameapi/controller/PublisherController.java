@@ -2,7 +2,7 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.PublisherResourceAssembler;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.PublisherService;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.PublisherServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
@@ -18,11 +18,11 @@ public class PublisherController implements Controller<Publisher> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PublisherController.class);
 
-    private final PublisherService publisherService;
+    private final PublisherServiceImpl publisherService;
 
     private final PublisherResourceAssembler publisherResourceAssembler;
 
-    public PublisherController(final PublisherService publisherService, final PublisherResourceAssembler publisherResourceAssembler) {
+    public PublisherController(final PublisherServiceImpl publisherService, final PublisherResourceAssembler publisherResourceAssembler) {
         this.publisherService = publisherService;
         this.publisherResourceAssembler = publisherResourceAssembler;
     }

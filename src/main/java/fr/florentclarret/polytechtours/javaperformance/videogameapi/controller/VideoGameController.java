@@ -2,7 +2,7 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.VideoGameResourceAssembler;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.VideoGameService;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.VideoGameServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
@@ -18,11 +18,11 @@ public class VideoGameController implements Controller<VideoGame> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VideoGameController.class);
 
-    private final VideoGameService videoGameService;
+    private final VideoGameServiceImpl videoGameService;
 
     private final VideoGameResourceAssembler videoGameResourceAssembler;
 
-    public VideoGameController(final VideoGameService videoGameService, final VideoGameResourceAssembler videoGameResourceAssembler) {
+    public VideoGameController(final VideoGameServiceImpl videoGameService, final VideoGameResourceAssembler videoGameResourceAssembler) {
         this.videoGameService = videoGameService;
         this.videoGameResourceAssembler = videoGameResourceAssembler;
     }

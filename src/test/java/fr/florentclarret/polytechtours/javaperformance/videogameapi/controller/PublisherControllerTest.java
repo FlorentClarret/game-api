@@ -51,7 +51,7 @@ public class PublisherControllerTest {
     @Test
     public void testGetUnknownPublisher() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/publisher/666")).andDo(print()).andExpect(status().isNotFound())
-                .andExpect(content().string("Publisher with id [666] not found"));
+                .andExpect(content().string("Entity with id [666] not found"));
     }
 
     @Test

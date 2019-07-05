@@ -41,7 +41,7 @@ public class PlatformControllerTest {
     @Test
     public void testGetUnknownPlatform() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/platform/666")).andDo(print()).andExpect(status().isNotFound())
-                .andExpect(content().string("Platform with id [666] not found"));
+                .andExpect(content().string("Entity with id [666] not found"));
     }
 
     @Test
