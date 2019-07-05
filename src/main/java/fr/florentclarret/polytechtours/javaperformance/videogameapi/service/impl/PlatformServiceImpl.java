@@ -2,6 +2,7 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.service.imp
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.repository.PlatformRepository;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.AbstractEntityService;
 import org.springframework.stereotype.Service;
 
 @Service

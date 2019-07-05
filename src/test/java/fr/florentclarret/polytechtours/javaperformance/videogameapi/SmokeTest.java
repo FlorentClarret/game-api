@@ -1,9 +1,8 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi;
 
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PlatformController;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PublisherController;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.VideoGameController;
-
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.PlatformControllerImpl;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.PublisherControllerImpl;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.VideoGameControllerImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,18 +15,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class SmokeTest {
 
     @Autowired
-    private PlatformController platformController;
+    private PlatformControllerImpl platformControllerImpl;
 
     @Autowired
-    private VideoGameController videoGameController;
+    private VideoGameControllerImpl videoGameControllerImpl;
 
     @Autowired
-    private PublisherController publisherController;
+    private PublisherControllerImpl publisherControllerImpl;
 
     @Test
     public void contextLoads() {
-        Assert.assertNotNull(platformController);
-        Assert.assertNotNull(videoGameController);
-        Assert.assertNotNull(publisherController);
+        Assert.assertNotNull(platformControllerImpl);
+        Assert.assertNotNull(videoGameControllerImpl);
+        Assert.assertNotNull(publisherControllerImpl);
     }
 }

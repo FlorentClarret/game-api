@@ -1,8 +1,7 @@
-package fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl;
+package fr.florentclarret.polytechtours.javaperformance.videogameapi.service;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.BaseEntity;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.BusinessException;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.EntityService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
@@ -14,7 +13,7 @@ public abstract class AbstractEntityService<T extends BaseEntity> implements Ent
 
     private final JpaRepository<T, Long> repository;
 
-    protected AbstractEntityService(final JpaRepository<T, Long> repository) {
+    public AbstractEntityService(final JpaRepository<T, Long> repository) {
         this.repository = repository;
     }
 

@@ -1,8 +1,8 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.enums.RelType;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PublisherController;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.VideoGameController;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.PublisherControllerImpl;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.impl.VideoGameControllerImpl;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import org.springframework.hateoas.Resource;
@@ -15,7 +15,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 public final class PublisherResourceAssembler extends AbstractCustomResourceAssembler<Publisher> {
 
     PublisherResourceAssembler() {
-        super(PublisherController.class);
+        super(PublisherControllerImpl.class);
     }
 
     @Override
@@ -25,7 +25,7 @@ public final class PublisherResourceAssembler extends AbstractCustomResourceAsse
         if (publisher.getVideoGameList() != null) {
             for (final VideoGame videoGame : publisher.getVideoGameList()) {
                 if (videoGame != null) {
-                    resource.add(linkTo(methodOn(VideoGameController.class).one(videoGame.getId())).withRel(RelType.VIDEO_GAME.getName()));
+                    resource.add(linkTo(methodOn(VideoGameControllerImpl.class).one(videoGame.getId())).withRel(RelType.VIDEO_GAME.getName()));
                 }
             }
         }
