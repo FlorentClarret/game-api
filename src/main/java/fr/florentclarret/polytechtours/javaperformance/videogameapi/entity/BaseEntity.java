@@ -1,6 +1,7 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,26 +26,27 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Getter
-    @Setter
+    @Setter(AccessLevel.PRIVATE)
+    @JsonIgnore
     protected Long id;
 
     @Version
     @Column(name = "version")
     @Getter
-    @Setter
+    @Setter(AccessLevel.PRIVATE)
     @JsonIgnore
     protected Long version;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createDate")
     @Getter
-    @Setter
+    @Setter(AccessLevel.PRIVATE)
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updateDate")
     @Getter
-    @Setter
+    @Setter(AccessLevel.PRIVATE)
     private Date updateDate;
 
     @Column(name = "name")
@@ -53,12 +55,12 @@ public abstract class BaseEntity {
     protected String name;
 
     @PrePersist
-    protected void onCreate() {
+    private void onCreate() {
         this.createDate = this.updateDate = new Date();
     }
 
     @PreUpdate
-    protected void onUpdate() {
+    private void onUpdate() {
         this.updateDate = new Date();
     }
 
