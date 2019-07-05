@@ -36,7 +36,6 @@ public class PlatformControllerTest {
                 .andExpect(jsonPath("_links.videogame", hasSize(2)))
                 .andExpect(jsonPath("_links.videogame[0].href", is("http://localhost/api/v1.0/videogame/2")))
                 .andExpect(jsonPath("_links.videogame[1].href", is("http://localhost/api/v1.0/videogame/3")));
-
     }
 
     @Test

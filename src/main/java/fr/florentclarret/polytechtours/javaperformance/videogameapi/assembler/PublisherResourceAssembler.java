@@ -1,5 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler;
 
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.enums.RelType;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PublisherController;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.VideoGameController;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
@@ -24,7 +25,7 @@ public final class PublisherResourceAssembler extends AbstractCustomResourceAsse
         if (publisher.getVideoGameList() != null) {
             for (final VideoGame videoGame : publisher.getVideoGameList()) {
                 if (videoGame != null) {
-                    resource.add(linkTo(methodOn(VideoGameController.class).one(videoGame.getId())).withRel("videogame"));
+                    resource.add(linkTo(methodOn(VideoGameController.class).one(videoGame.getId())).withRel(RelType.VIDEO_GAME.getName()));
                 }
             }
         }

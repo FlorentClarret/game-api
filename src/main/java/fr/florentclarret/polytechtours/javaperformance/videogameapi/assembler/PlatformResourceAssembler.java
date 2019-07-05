@@ -1,5 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler;
 
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.assembler.enums.RelType;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.PlatformController;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.VideoGameController;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
@@ -24,7 +25,7 @@ public final class PlatformResourceAssembler extends AbstractCustomResourceAssem
         if (platform.getVideoGameList() != null) {
             for (final VideoGame videoGame : platform.getVideoGameList()) {
                 if (videoGame != null) {
-                    resource.add(linkTo(methodOn(VideoGameController.class).one(videoGame.getId())).withRel("videogame"));
+                    resource.add(linkTo(methodOn(VideoGameController.class).one(videoGame.getId())).withRel(RelType.VIDEO_GAME.getName()));
                 }
             }
         }
