@@ -27,7 +27,6 @@ public class VideoGameControllerImplTest {
     @Test
     public void testGetGameAlone() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/videogame/1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1)))
                 .andExpect(jsonPath("name", is("game1")))
                 .andExpect(jsonPath("year", is(2019)))
                 .andExpect(jsonPath("criticScore", is("9.3")))
@@ -42,7 +41,6 @@ public class VideoGameControllerImplTest {
     @Test
     public void testGetGame() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/videogame/2")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(2)))
                 .andExpect(jsonPath("name", is("game2")))
                 .andExpect(jsonPath("year", is(2012)))
                 .andExpect(jsonPath("criticScore", is("2")))
@@ -66,7 +64,6 @@ public class VideoGameControllerImplTest {
     public void testGetAllGames() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/videogame/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.videoGameList", hasSize(3)))
-                .andExpect(jsonPath("_embedded.videoGameList[0].id", is(1)))
                 .andExpect(jsonPath("_embedded.videoGameList[0].name", is("game1")))
                 .andExpect(jsonPath("_embedded.videoGameList[0].year", is(2019)))
                 .andExpect(jsonPath("_embedded.videoGameList[0].criticScore", is("9.3")))
@@ -78,7 +75,6 @@ public class VideoGameControllerImplTest {
                 .andExpect(jsonPath("_embedded.videoGameList[0]._links.all.href", is("http://localhost/api/v1.0/videogame/")))
                 .andExpect(jsonPath("_embedded.videoGameList[0]._links.publisher").doesNotExist())
                 .andExpect(jsonPath("_embedded.videoGameList[0]._links.publisher").doesNotExist())
-                .andExpect(jsonPath("_embedded.videoGameList[1].id", is(2)))
                 .andExpect(jsonPath("_embedded.videoGameList[1].name", is("game2")))
                 .andExpect(jsonPath("_embedded.videoGameList[1].year", is(2012)))
                 .andExpect(jsonPath("_embedded.videoGameList[1].criticScore", is("2")))
@@ -90,7 +86,6 @@ public class VideoGameControllerImplTest {
                 .andExpect(jsonPath("_embedded.videoGameList[1]._links.all.href", is("http://localhost/api/v1.0/videogame/")))
                 .andExpect(jsonPath("_embedded.videoGameList[1]._links.publisher.href", is("http://localhost/api/v1.0/publisher/1")))
                 .andExpect(jsonPath("_embedded.videoGameList[1]._links.platform.href", is("http://localhost/api/v1.0/platform/1")))
-                .andExpect(jsonPath("_embedded.videoGameList[2].id", is(3)))
                 .andExpect(jsonPath("_embedded.videoGameList[2].name", is("game3")))
                 .andExpect(jsonPath("_embedded.videoGameList[2].year", is(1950)))
                 .andExpect(jsonPath("_embedded.videoGameList[2].criticScore", is("5")))

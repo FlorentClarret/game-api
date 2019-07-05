@@ -1,7 +1,8 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,27 +27,32 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Getter
-    @Setter(AccessLevel.PRIVATE)
+    @Setter
+    @ApiParam(hidden = true)
     @JsonIgnore
     protected Long id;
 
     @Version
     @Column(name = "version")
     @Getter
-    @Setter(AccessLevel.PRIVATE)
-    @JsonIgnore
+    @Setter
+    @ApiParam(hidden = true)
     protected Long version;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createDate")
     @Getter
-    @Setter(AccessLevel.PRIVATE)
+    @Setter
+    @ApiParam(hidden = true)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updateDate")
     @Getter
-    @Setter(AccessLevel.PRIVATE)
+    @Setter
+    @ApiParam(hidden = true)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updateDate;
 
     @Column(name = "name")

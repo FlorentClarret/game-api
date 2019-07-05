@@ -27,7 +27,6 @@ public class PlatformControllerImplTest {
     @Test
     public void testGetPlatform() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/platform/1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1)))
                 .andExpect(jsonPath("name", is("platform1")))
                 .andExpect(jsonPath("updateDate").isNotEmpty())
                 .andExpect(jsonPath("createDate").isNotEmpty())
@@ -48,7 +47,6 @@ public class PlatformControllerImplTest {
     public void testGetAllPlatforms() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/platform/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.platformList", hasSize(1)))
-                .andExpect(jsonPath("_embedded.platformList[0].id", is(1)))
                 .andExpect(jsonPath("_embedded.platformList[0].name", is("platform1")))
                 .andExpect(jsonPath("_embedded.platformList[0].updateDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.platformList[0].createDate").isNotEmpty())

@@ -27,7 +27,6 @@ public class PublisherControllerImplTest {
     @Test
     public void testGetPublisherWithoutGames() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/publisher/2")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(2)))
                 .andExpect(jsonPath("name", is("publisher2")))
                 .andExpect(jsonPath("updateDate").isNotEmpty())
                 .andExpect(jsonPath("createDate").isNotEmpty())
@@ -39,7 +38,6 @@ public class PublisherControllerImplTest {
     @Test
     public void testGetPublisherWithGames() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/publisher/1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("id", is(1)))
                 .andExpect(jsonPath("name", is("publisher1")))
                 .andExpect(jsonPath("updateDate").isNotEmpty())
                 .andExpect(jsonPath("createDate").isNotEmpty())
@@ -58,14 +56,12 @@ public class PublisherControllerImplTest {
     public void testGetAllPublishers() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/publisher/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.publisherList", hasSize(2)))
-                .andExpect(jsonPath("_embedded.publisherList[0].id", is(1)))
                 .andExpect(jsonPath("_embedded.publisherList[0].name", is("publisher1")))
                 .andExpect(jsonPath("_embedded.publisherList[0].updateDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.publisherList[0].createDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.publisherList[0]._links.self.href", is("http://localhost/api/v1.0/publisher/1")))
                 .andExpect(jsonPath("_embedded.publisherList[0]._links.all.href", is("http://localhost/api/v1.0/publisher/")))
                 .andExpect(jsonPath("_embedded.publisherList[0]._links.videogame.href", is("http://localhost/api/v1.0/videogame/2")))
-                .andExpect(jsonPath("_embedded.publisherList[1].id", is(2)))
                 .andExpect(jsonPath("_embedded.publisherList[1].name", is("publisher2")))
                 .andExpect(jsonPath("_embedded.publisherList[1].updateDate").isNotEmpty())
                 .andExpect(jsonPath("_embedded.publisherList[1].createDate").isNotEmpty())
