@@ -16,8 +16,14 @@ import java.util.List;
 @Service
 public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame, VideoGameRepository> implements VideoGameService {
 
-    public VideoGameServiceImpl(final VideoGameRepository repository) {
+    private final PlatformServiceImpl platformService;
+
+    private final PublisherServiceImpl publisherService;
+
+    public VideoGameServiceImpl(final VideoGameRepository repository, final PlatformServiceImpl platformService, final PublisherServiceImpl publisherService) {
         super(repository);
+        this.platformService = platformService;
+        this.publisherService = publisherService;
     }
 
     @Override
@@ -107,5 +113,33 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         final VideoGame videoGame = this.findById(gameId);
         videoGame.setPlatform(null);
         this.repository.save(videoGame);
+    }
+
+    @Override
+    public Publisher setPublisher(final Long gameId, final Publisher publisher) {
+        final VideoGame videoGame = this.findById(gameId);
+
+        try {
+            videoGame.setPublisher(this.publisherService.findByName(publisher.getName()));
+        } catch (final BusinessException e) {
+            videoGame.setPublisher(this.publisherService.save(publisher));
+        }
+
+        this.repository.save(videoGame);
+        return videoGame.getPublisher();
+    }
+
+    @Override
+    public Platform setPlatform(final Long gameId, final Platform platform) {
+        final VideoGame videoGame = this.findById(gameId);
+
+        try {
+            videoGame.setPlatform(this.platformService.findByName(platform.getName()));
+        } catch (final BusinessException e) {
+            videoGame.setPlatform(this.platformService.save(platform));
+        }
+
+        this.repository.save(videoGame);
+        return videoGame.getPlatform();
     }
 }

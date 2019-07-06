@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +47,11 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame, Video
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping(path = "{id}/publisher")
+    public Resource<Publisher> setPublisher(@PathVariable final Long id, @RequestBody final Publisher publisher) {
+        return this.publisherResourceAssembler.toResource(super.entityService.setPublisher(id, publisher), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
+    }
+
     @GetMapping(path = "{id}/platform", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Platform> getPlatform(@PathVariable final Long id) {
         return this.platformResourceAssembler.toResource(super.entityService.getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
@@ -54,6 +61,11 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame, Video
     public ResponseEntity<Void> deletePlatform(@PathVariable final Long id) {
         super.entityService.removePlatform(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(path = "{id}/platform")
+    public Resource<Platform> setPlatform(@PathVariable final Long id, @RequestBody final Platform platform) {
+        return this.platformResourceAssembler.toResource(super.entityService.setPlatform(id, platform), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
     }
 
 }

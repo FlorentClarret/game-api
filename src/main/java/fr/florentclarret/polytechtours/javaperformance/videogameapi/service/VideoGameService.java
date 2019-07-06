@@ -19,4 +19,8 @@ public interface VideoGameService extends EntityService<VideoGame> {
     void removePublisher(Long gameId);
 
     void removePlatform(Long gameId);
+
+    Publisher setPublisher(Long gameId, Publisher publisher);
+
+    Platform setPlatform(Long gameId, Platform platform);
 }

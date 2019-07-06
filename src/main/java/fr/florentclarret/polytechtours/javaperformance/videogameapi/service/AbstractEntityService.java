@@ -57,4 +57,9 @@ public abstract class AbstractEntityService<T extends BaseEntity, U extends Base
     public void delete(final Long id) {
         this.repository.delete(this.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND)));
     }
+
+    @Override
+    public T findByName(final String name) {
+        return this.repository.findByName(name).orElseThrow(() -> new BusinessException(String.format("The entity with name [%s] already exists", name), HttpStatus.CONFLICT));
+    }
 }

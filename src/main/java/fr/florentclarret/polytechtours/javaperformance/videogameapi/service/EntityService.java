@@ -14,4 +14,6 @@ public interface EntityService<T extends BaseEntity> {
     T update(final Long id, final T entity);
 
     void delete(final Long id);
+
+    T findByName(String name);
 }
