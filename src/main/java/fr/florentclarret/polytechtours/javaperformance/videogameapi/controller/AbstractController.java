@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public abstract class AbstractController<T extends BaseEntity> implements Controller<T> {
+public abstract class AbstractController<T extends BaseEntity, U extends EntityService<T>> implements Controller<T> {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected final EntityService<T> entityService;
+    protected final U entityService;
 
-    protected final AbstractCustomResourceAssembler<T> resourceAssembler;
+    private final AbstractCustomResourceAssembler<T> resourceAssembler;
 
-    public AbstractController(final EntityService<T> entityService, final AbstractCustomResourceAssembler<T> resourceAssembler) {
+    public AbstractController(final U entityService, final AbstractCustomResourceAssembler<T> resourceAssembler) {
         this.entityService = entityService;
         this.resourceAssembler = resourceAssembler;
     }

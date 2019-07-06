@@ -20,7 +20,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/publisher/")
-public class PublisherControllerImpl extends AbstractController<Publisher> {
+public class PublisherControllerImpl extends AbstractController<Publisher, PublisherServiceImpl> {
 
     private final VideoGameResourceAssembler videoGameResourceAssembler;
 

@@ -22,7 +22,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/videogame/")
-public class VideoGameControllerImpl extends AbstractController<VideoGame> {
+public class VideoGameControllerImpl extends AbstractController<VideoGame, VideoGameServiceImpl> {
 
     private final PublisherResourceAssembler publisherResourceAssembler;
 
@@ -36,23 +36,23 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame> {
 
     @GetMapping(path = "{id}/publisher", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Publisher> getPublisher(@PathVariable final Long id) {
-        return this.publisherResourceAssembler.toResource(((VideoGameServiceImpl) super.entityService).getPublisherForGameWithId(id), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
+        return this.publisherResourceAssembler.toResource(super.entityService.getPublisherForGameWithId(id), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
     }
 
     @DeleteMapping(path = "{id}/publisher")
     public ResponseEntity<Void> deletePublisher(@PathVariable final Long id) {
-        ((VideoGameServiceImpl) super.entityService).removePublisher(id);
+        super.entityService.removePublisher(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(path = "{id}/platform", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Platform> getPlatform(@PathVariable final Long id) {
-        return this.platformResourceAssembler.toResource(((VideoGameServiceImpl) super.entityService).getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
+        return this.platformResourceAssembler.toResource(super.entityService.getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
     }
 
     @DeleteMapping(path = "{id}/platform")
     public ResponseEntity<Void> deletePlatform(@PathVariable final Long id) {
-        ((VideoGameServiceImpl) super.entityService).removePlatform(id);
+        super.entityService.removePlatform(id);
         return ResponseEntity.noContent().build();
     }
 
