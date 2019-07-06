@@ -6,7 +6,7 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.Abst
 import org.springframework.stereotype.Service;
 
 @Service
-public final class PublisherServiceImpl extends AbstractEntityService<Publisher> {
+public final class PublisherServiceImpl extends AbstractEntityService<Publisher, PublisherRepository> {
 
     public PublisherServiceImpl(final PublisherRepository repository) {
         super(repository);

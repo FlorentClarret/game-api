@@ -13,7 +13,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 
 @Service
-public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame> {
+public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame, VideoGameRepository> {
 
     public VideoGameServiceImpl(final VideoGameRepository repository) {
         super(repository);
@@ -21,11 +21,11 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame>
 
     @Override
     public VideoGame update(final Long id, final VideoGame entity) {
-        this.repository.findByName(entity.getName()).ifPresent(s -> {
+        super.repository.findByName(entity.getName()).ifPresent(s -> {
             throw new BusinessException(String.format("The entity with name [%s] already exists", entity.getName()), HttpStatus.CONFLICT);
         });
 
-        final VideoGame oldEntity = this.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
+        final VideoGame oldEntity = super.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
 
         if (entity.getName() != null) {
             oldEntity.setName(entity.getName());
@@ -47,11 +47,11 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame>
             oldEntity.setGlobalSales(entity.getGlobalSales());
         }
 
-        return this.repository.save(oldEntity);
+        return super.repository.save(oldEntity);
     }
 
     public List<VideoGame> getByPublisherId(final Long id) {
-        final List<VideoGame> videoGames = ((VideoGameRepository) super.repository).findByPublisherId(id);
+        final List<VideoGame> videoGames = super.repository.findByPublisherId(id);
 
         if (CollectionUtils.isEmpty(videoGames)) {
             throw new BusinessException(String.format("No game found for publisher with id [%s]", id), HttpStatus.NOT_FOUND);
@@ -61,7 +61,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame>
     }
 
     public List<VideoGame> getByPlatformId(final Long id) {
-        final List<VideoGame> videoGames = ((VideoGameRepository) super.repository).findByPlatformId(id);
+        final List<VideoGame> videoGames = super.repository.findByPlatformId(id);
 
         if (CollectionUtils.isEmpty(videoGames)) {
             throw new BusinessException(String.format("No game found for platform with id [%s]", id), HttpStatus.NOT_FOUND);

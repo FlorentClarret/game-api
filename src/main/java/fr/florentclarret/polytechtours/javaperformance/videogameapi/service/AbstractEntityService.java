@@ -8,11 +8,11 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
-public abstract class AbstractEntityService<T extends BaseEntity> implements EntityService<T> {
+public abstract class AbstractEntityService<T extends BaseEntity, U extends BaseEntityRepository<T>> implements EntityService<T> {
 
-    protected final BaseEntityRepository<T> repository;
+    protected final U repository;
 
-    public AbstractEntityService(final BaseEntityRepository<T> repository) {
+    public AbstractEntityService(final U repository) {
         this.repository = repository;
     }
 
