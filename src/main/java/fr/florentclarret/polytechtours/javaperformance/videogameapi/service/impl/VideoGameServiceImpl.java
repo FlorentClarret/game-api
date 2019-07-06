@@ -6,6 +6,7 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Video
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.BusinessException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.repository.VideoGameRepository;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.AbstractEntityService;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.VideoGameService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -13,7 +14,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.List;
 
 @Service
-public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame, VideoGameRepository> {
+public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame, VideoGameRepository> implements VideoGameService {
 
     public VideoGameServiceImpl(final VideoGameRepository repository) {
         super(repository);
@@ -50,6 +51,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         return super.repository.save(oldEntity);
     }
 
+    @Override
     public List<VideoGame> getByPublisherId(final Long id) {
         final List<VideoGame> videoGames = super.repository.findByPublisherId(id);
 
@@ -60,6 +62,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         return videoGames;
     }
 
+    @Override
     public List<VideoGame> getByPlatformId(final Long id) {
         final List<VideoGame> videoGames = super.repository.findByPlatformId(id);
 
@@ -70,6 +73,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         return videoGames;
     }
 
+    @Override
     public Publisher getPublisherForGameWithId(final Long gameId) {
         final VideoGame videoGame = this.findById(gameId);
 
@@ -80,6 +84,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         }
     }
 
+    @Override
     public Platform getPlatformForGameWithId(final Long gameId) {
         final VideoGame videoGame = this.findById(gameId);
 
@@ -90,12 +95,14 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         }
     }
 
+    @Override
     public void removePublisher(final Long gameId) {
         final VideoGame videoGame = this.findById(gameId);
         videoGame.setPublisher(null);
         this.repository.save(videoGame);
     }
 
+    @Override
     public void removePlatform(final Long gameId) {
         final VideoGame videoGame = this.findById(gameId);
         videoGame.setPlatform(null);

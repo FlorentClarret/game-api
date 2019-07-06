@@ -7,7 +7,7 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.controller.A
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.VideoGameServiceImpl;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.VideoGameService;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +22,13 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(path = "/api/v1.0/videogame/")
-public class VideoGameControllerImpl extends AbstractController<VideoGame, VideoGameServiceImpl> {
+public class VideoGameControllerImpl extends AbstractController<VideoGame, VideoGameService> {
 
     private final PublisherResourceAssembler publisherResourceAssembler;
 
     private final PlatformResourceAssembler platformResourceAssembler;
 
-    public VideoGameControllerImpl(final VideoGameServiceImpl service, final VideoGameResourceAssembler resourceAssembler, final PublisherResourceAssembler publisherResourceAssembler, final PlatformResourceAssembler platformResourceAssembler) {
+    public VideoGameControllerImpl(final VideoGameService service, final VideoGameResourceAssembler resourceAssembler, final PublisherResourceAssembler publisherResourceAssembler, final PlatformResourceAssembler platformResourceAssembler) {
         super(service, resourceAssembler);
         this.publisherResourceAssembler = publisherResourceAssembler;
         this.platformResourceAssembler = platformResourceAssembler;
