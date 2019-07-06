@@ -3,8 +3,6 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -24,39 +22,29 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @Getter
-    @Setter
     @ApiModelProperty(hidden = true)
     @JsonIgnore
     private Long id;
 
     @Version
     @Column(name = "version")
-    @Getter
-    @Setter
     @ApiModelProperty(hidden = true)
     @JsonIgnore
     private Long version;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createDate")
-    @Getter
-    @Setter
     @ApiModelProperty(hidden = true)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updateDate")
-    @Getter
-    @Setter
     @ApiModelProperty(hidden = true)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updateDate;
 
     @Column(name = "name")
-    @Getter
-    @Setter
     private String name;
 
     @PrePersist
@@ -69,4 +57,43 @@ public abstract class BaseEntity {
         this.updateDate = new Date();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(final Long version) {
+        this.version = version;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(final Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(final Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
 }

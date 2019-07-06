@@ -1,11 +1,6 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,26 +9,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Setter
-@RequiredArgsConstructor
-@ToString
 @Table(name = "video_game")
 public final class VideoGame extends BaseEntity {
 
     @Column(name = "year")
-    @Getter
     private Integer year;
 
     @Column(name = "critic_score")
-    @Getter
     private String criticScore;
 
     @Column(name = "user_score")
-    @Getter
     private String userScore;
 
     @Column(name = "global_sales")
-    @Getter
     private String globalSales;
 
     @ManyToOne
@@ -46,13 +34,51 @@ public final class VideoGame extends BaseEntity {
     @JsonIgnore
     private Platform platform;
 
-    @ApiModelProperty(hidden = true)
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(final Integer year) {
+        this.year = year;
+    }
+
+    public String getCriticScore() {
+        return criticScore;
+    }
+
+    public void setCriticScore(final String criticScore) {
+        this.criticScore = criticScore;
+    }
+
+    public String getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(final String userScore) {
+        this.userScore = userScore;
+    }
+
+    public String getGlobalSales() {
+        return globalSales;
+    }
+
+    public void setGlobalSales(final String globalSales) {
+        this.globalSales = globalSales;
+    }
+
     public Publisher getPublisher() {
         return publisher;
     }
 
-    @ApiModelProperty(hidden = true)
+    public void setPublisher(final Publisher publisher) {
+        this.publisher = publisher;
+    }
+
     public Platform getPlatform() {
         return platform;
+    }
+
+    public void setPlatform(final Platform platform) {
+        this.platform = platform;
     }
 }
