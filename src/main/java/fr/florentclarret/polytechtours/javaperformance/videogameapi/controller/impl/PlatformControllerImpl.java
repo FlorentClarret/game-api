@@ -9,6 +9,7 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.VideoGameServiceImpl;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,7 @@ public class PlatformControllerImpl extends AbstractController<Platform> {
         this.videoGameService = videoGameService;
     }
 
-    @GetMapping(path = "{id}/videogame")
+    @GetMapping(path = "{id}/videogame", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resources<Resource<VideoGame>> getVideoGames(@PathVariable final Long id) {
         return this.videoGameResourceAssembler.toResources(this.videoGameService.getByPlatformId(id), linkTo(methodOn(this.getClass()).getVideoGames(id)).withSelfRel());
     }

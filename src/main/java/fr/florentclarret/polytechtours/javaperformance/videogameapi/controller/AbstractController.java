@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,28 +30,28 @@ public abstract class AbstractController<T extends BaseEntity> implements Contro
     }
 
     @Override
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Resources<Resource<T>> all() {
         logger.trace("Method [getAll] called");
         return this.resourceAssembler.toResources(this.entityService.findAll());
     }
 
     @Override
-    @GetMapping(path = "{id}")
+    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<T> one(@PathVariable final Long id) {
         logger.trace("Method [get] with id [{}] called", id);
         return this.resourceAssembler.toResource(this.entityService.findById(id));
     }
 
     @Override
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<T> create(@RequestBody final T entity) {
         logger.trace("Method [create] with entity [{}] called", entity);
         return this.resourceAssembler.toResource(this.entityService.save(entity));
     }
 
     @Override
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<T> update(@PathVariable final Long id, @RequestBody final T entity) {
         logger.trace("Method [update] with entity [{}] on id [{}] called", entity, id);
         return this.resourceAssembler.toResource(this.entityService.update(id, entity));

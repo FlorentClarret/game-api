@@ -9,6 +9,7 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publi
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.VideoGameServiceImpl;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame> {
         this.platformResourceAssembler = platformResourceAssembler;
     }
 
-    @GetMapping(path = "{id}/publisher")
+    @GetMapping(path = "{id}/publisher", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Publisher> getPublisher(@PathVariable final Long id) {
         return this.publisherResourceAssembler.toResource(((VideoGameServiceImpl) super.entityService).getPublisherForGameWithId(id), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
     }
@@ -44,7 +45,7 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame> {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping(path = "{id}/platform")
+    @GetMapping(path = "{id}/platform", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Platform> getPlatform(@PathVariable final Long id) {
         return this.platformResourceAssembler.toResource(((VideoGameServiceImpl) super.entityService).getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
     }
