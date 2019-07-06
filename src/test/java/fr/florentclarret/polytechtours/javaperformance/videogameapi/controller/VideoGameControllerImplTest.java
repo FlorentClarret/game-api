@@ -222,4 +222,28 @@ public class VideoGameControllerImplTest {
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/platform/")))
                 .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/1/videogame")));
     }
+
+    @Test
+    public void testRemovePlatformGameNotFound() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/videogame/666/platform")).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("Entity with id [666] not found"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testRemovePlatform() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/videogame/2/platform")).andDo(print()).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void testRemovePublisherGameNotFound() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/videogame/666/publisher")).andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string("Entity with id [666] not found"));
+    }
+
+    @Test
+    @DirtiesContext
+    public void testRemovePublisher() throws Exception {
+        this.mockMvc.perform(delete("/api/v1.0/videogame/2/publisher")).andDo(print()).andExpect(status().isNoContent());
+    }
 }

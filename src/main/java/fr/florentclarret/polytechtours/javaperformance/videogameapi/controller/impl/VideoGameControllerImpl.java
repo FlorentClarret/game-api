@@ -9,6 +9,8 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publi
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.impl.VideoGameServiceImpl;
 import org.springframework.hateoas.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +38,21 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame> {
         return this.publisherResourceAssembler.toResource(((VideoGameServiceImpl) super.entityService).getPublisherForGameWithId(id), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
     }
 
+    @DeleteMapping(path = "{id}/publisher")
+    public ResponseEntity<Void> deletePublisher(@PathVariable final Long id) {
+        ((VideoGameServiceImpl) super.entityService).removePublisher(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(path = "{id}/platform")
     public Resource<Platform> getPlatform(@PathVariable final Long id) {
         return this.platformResourceAssembler.toResource(((VideoGameServiceImpl) super.entityService).getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
     }
+
+    @DeleteMapping(path = "{id}/platform")
+    public ResponseEntity<Void> deletePlatform(@PathVariable final Long id) {
+        ((VideoGameServiceImpl) super.entityService).removePlatform(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

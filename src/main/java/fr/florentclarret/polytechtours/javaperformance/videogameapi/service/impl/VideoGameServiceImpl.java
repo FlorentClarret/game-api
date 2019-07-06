@@ -89,4 +89,16 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame>
             throw new BusinessException(String.format("No platform found for game with id [%s]", gameId), HttpStatus.NOT_FOUND);
         }
     }
+
+    public void removePublisher(final Long gameId) {
+        final VideoGame videoGame = this.findById(gameId);
+        videoGame.setPublisher(null);
+        this.repository.save(videoGame);
+    }
+
+    public void removePlatform(final Long gameId) {
+        final VideoGame videoGame = this.findById(gameId);
+        videoGame.setPlatform(null);
+        this.repository.save(videoGame);
+    }
 }
