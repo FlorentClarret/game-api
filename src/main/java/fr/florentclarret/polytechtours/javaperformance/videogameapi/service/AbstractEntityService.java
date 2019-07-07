@@ -10,7 +10,7 @@ import java.util.List;
 
 public abstract class AbstractEntityService<T extends BaseEntity, U extends BaseEntityRepository<T>> implements EntityService<T> {
 
-    protected final U repository;
+    private final U repository;
 
     public AbstractEntityService(final U repository) {
         this.repository = repository;
@@ -61,5 +61,9 @@ public abstract class AbstractEntityService<T extends BaseEntity, U extends Base
     @Override
     public T findByName(final String name) {
         return this.repository.findByName(name).orElseThrow(() -> new BusinessException(String.format("The entity with name [%s] already exists", name), HttpStatus.CONFLICT));
+    }
+
+    protected U getRepository() {
+        return repository;
     }
 }

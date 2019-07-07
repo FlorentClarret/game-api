@@ -38,34 +38,34 @@ public class VideoGameControllerImpl extends AbstractController<VideoGame, Video
 
     @GetMapping(path = "{id}/publisher", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Publisher> getPublisher(@PathVariable final Long id) {
-        return this.publisherResourceAssembler.toResource(super.entityService.getPublisherForGameWithId(id), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
+        return this.publisherResourceAssembler.toResource(super.getEntityService().getPublisherForGameWithId(id), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
     }
 
     @DeleteMapping(path = "{id}/publisher")
     public ResponseEntity<Void> deletePublisher(@PathVariable final Long id) {
-        super.entityService.removePublisher(id);
+        super.getEntityService().removePublisher(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping(path = "{id}/publisher")
     public Resource<Publisher> setPublisher(@PathVariable final Long id, @RequestBody final Publisher publisher) {
-        return this.publisherResourceAssembler.toResource(super.entityService.setPublisher(id, publisher), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
+        return this.publisherResourceAssembler.toResource(super.getEntityService().setPublisher(id, publisher), linkTo(methodOn(this.getClass()).getPublisher(id)).withSelfRel());
     }
 
     @GetMapping(path = "{id}/platform", produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<Platform> getPlatform(@PathVariable final Long id) {
-        return this.platformResourceAssembler.toResource(super.entityService.getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
+        return this.platformResourceAssembler.toResource(super.getEntityService().getPlatformForGameWithId(id), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
     }
 
     @DeleteMapping(path = "{id}/platform")
     public ResponseEntity<Void> deletePlatform(@PathVariable final Long id) {
-        super.entityService.removePlatform(id);
+        super.getEntityService().removePlatform(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping(path = "{id}/platform")
     public Resource<Platform> setPlatform(@PathVariable final Long id, @RequestBody final Platform platform) {
-        return this.platformResourceAssembler.toResource(super.entityService.setPlatform(id, platform), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
+        return this.platformResourceAssembler.toResource(super.getEntityService().setPlatform(id, platform), linkTo(methodOn(this.getClass()).getPlatform(id)).withSelfRel());
     }
 
 }

@@ -7,13 +7,13 @@ import java.util.List;
 public interface EntityService<T extends BaseEntity> {
     List<T> findAll();
 
-    T findById(final Long id);
+    T findById(Long id);
 
-    T save(final T entity);
+    T save(T entity);
 
-    T update(final Long id, final T entity);
+    T update(Long id, T entity);
 
-    void delete(final Long id);
+    void delete(Long id);
 
     T findByName(String name);
 }

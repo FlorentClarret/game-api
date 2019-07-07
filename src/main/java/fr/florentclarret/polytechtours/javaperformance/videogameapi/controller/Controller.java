@@ -7,13 +7,13 @@ import org.springframework.http.ResponseEntity;
 
 public interface Controller<T extends BaseEntity> {
 
-    Resource<T> one(final Long id);
+    Resource<T> one(Long id);
 
     Resources<Resource<T>> all();
 
-    Resource<T> create(final T entity);
+    Resource<T> create(T entity);
 
-    Resource<T> update(final Long id, final T entity);
+    Resource<T> update(Long id, T entity);
 
-    ResponseEntity<Void> delete(final Long id);
+    ResponseEntity<Void> delete(Long id);
 }

@@ -20,7 +20,7 @@ public abstract class AbstractController<T extends BaseEntity, U extends EntityS
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    protected final U entityService;
+    private final U entityService;
 
     private final AbstractCustomResourceAssembler<T> resourceAssembler;
 
@@ -63,5 +63,9 @@ public abstract class AbstractController<T extends BaseEntity, U extends EntityS
         logger.trace("Method [delete] with id [{}] called", id);
         this.entityService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    protected U getEntityService() {
+        return entityService;
     }
 }

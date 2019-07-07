@@ -9,6 +9,6 @@ import java.util.Optional;
 @NoRepositoryBean
 public interface BaseEntityRepository<T extends BaseEntity> extends JpaRepository<T, Long> {
 
-    Optional<T> findByName(final String name);
+    Optional<T> findByName(String name);
 
 }

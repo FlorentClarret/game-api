@@ -28,11 +28,11 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
 
     @Override
     public VideoGame update(final Long id, final VideoGame entity) {
-        super.repository.findByName(entity.getName()).ifPresent(s -> {
+        super.getRepository().findByName(entity.getName()).ifPresent(s -> {
             throw new BusinessException(String.format("The entity with name [%s] already exists", entity.getName()), HttpStatus.CONFLICT);
         });
 
-        final VideoGame oldEntity = super.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
+        final VideoGame oldEntity = super.getRepository().findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
 
         if (entity.getName() != null) {
             oldEntity.setName(entity.getName());
@@ -54,12 +54,12 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
             oldEntity.setGlobalSales(entity.getGlobalSales());
         }
 
-        return super.repository.save(oldEntity);
+        return super.getRepository().save(oldEntity);
     }
 
     @Override
     public List<VideoGame> getByPublisherId(final Long id) {
-        final List<VideoGame> videoGames = super.repository.findByPublisherId(id);
+        final List<VideoGame> videoGames = super.getRepository().findByPublisherId(id);
 
         if (CollectionUtils.isEmpty(videoGames)) {
             throw new BusinessException(String.format("No game found for publisher with id [%s]", id), HttpStatus.NOT_FOUND);
@@ -70,7 +70,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
 
     @Override
     public List<VideoGame> getByPlatformId(final Long id) {
-        final List<VideoGame> videoGames = super.repository.findByPlatformId(id);
+        final List<VideoGame> videoGames = super.getRepository().findByPlatformId(id);
 
         if (CollectionUtils.isEmpty(videoGames)) {
             throw new BusinessException(String.format("No game found for platform with id [%s]", id), HttpStatus.NOT_FOUND);
@@ -105,14 +105,14 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
     public void removePublisher(final Long gameId) {
         final VideoGame videoGame = this.findById(gameId);
         videoGame.setPublisher(null);
-        this.repository.save(videoGame);
+        this.getRepository().save(videoGame);
     }
 
     @Override
     public void removePlatform(final Long gameId) {
         final VideoGame videoGame = this.findById(gameId);
         videoGame.setPlatform(null);
-        this.repository.save(videoGame);
+        this.getRepository().save(videoGame);
     }
 
     @Override
@@ -125,7 +125,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
             videoGame.setPublisher(this.publisherService.save(publisher));
         }
 
-        this.repository.save(videoGame);
+        this.getRepository().save(videoGame);
         return videoGame.getPublisher();
     }
 
@@ -139,7 +139,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
             videoGame.setPlatform(this.platformService.save(platform));
         }
 
-        this.repository.save(videoGame);
+        this.getRepository().save(videoGame);
         return videoGame.getPlatform();
     }
 }
