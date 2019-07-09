@@ -2,6 +2,7 @@ package fr.florentclarret.polytechtours.javaperformance.videogameapi.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -83,14 +85,16 @@ public class PlatformControllerImplTest {
     public void testPostEntity() throws Exception {
         final Platform platform = new Platform();
         platform.setName("platform666");
-        this.mockMvc.perform(post("/api/v1.0/platform/").content(OBJECT_MAPPER.writeValueAsString(platform)).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+        final MvcResult mvcResult = this.mockMvc.perform(post("/api/v1.0/platform/").content(OBJECT_MAPPER.writeValueAsString(platform)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("name", is("platform666")))
                 .andExpect(jsonPath("updateDate").isNotEmpty())
                 .andExpect(jsonPath("createDate").isNotEmpty())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/3")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/3/videogame")));
+                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/3/videogame"))).andReturn();
+        Assert.assertEquals("http://localhost/api/v1.0/platform/3", mvcResult.getResponse().getHeader("Location"));
+        Assert.assertEquals("http://localhost/api/v1.0/platform/3", mvcResult.getResponse().getRedirectedUrl());
     }
 
     @Test

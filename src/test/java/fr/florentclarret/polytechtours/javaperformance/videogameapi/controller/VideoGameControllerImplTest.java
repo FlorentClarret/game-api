@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platform;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -131,8 +133,8 @@ public class VideoGameControllerImplTest {
         videoGame.setCriticScore("12");
         videoGame.setUserScore("13");
         videoGame.setGlobalSales("14");
-        this.mockMvc.perform(post("/api/v1.0/videogame/").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+        final MvcResult mvcResult = this.mockMvc.perform(post("/api/v1.0/videogame/").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("name", is("game666")))
                 .andExpect(jsonPath("year", is(2012)))
                 .andExpect(jsonPath("criticScore", is("12")))
@@ -143,7 +145,9 @@ public class VideoGameControllerImplTest {
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/videogame/4")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/videogame/")))
                 .andExpect(jsonPath("_links.publisher.href", is("http://localhost/api/v1.0/videogame/4/publisher")))
-                .andExpect(jsonPath("_links.platform.href", is("http://localhost/api/v1.0/videogame/4/platform")));
+                .andExpect(jsonPath("_links.platform.href", is("http://localhost/api/v1.0/videogame/4/platform"))).andReturn();
+        Assert.assertEquals("http://localhost/api/v1.0/videogame/4", mvcResult.getResponse().getHeader("Location"));
+        Assert.assertEquals("http://localhost/api/v1.0/videogame/4", mvcResult.getResponse().getRedirectedUrl());
     }
 
     @Test

@@ -4,6 +4,9 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.BaseE
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URISyntaxException;
 
 public interface Controller<T extends BaseEntity> {
 
@@ -11,7 +14,7 @@ public interface Controller<T extends BaseEntity> {
 
     Resources<Resource<T>> all();
 
-    Resource<T> create(T entity);
+    ResponseEntity<Resource<T>> create(T entity, UriComponentsBuilder builder) throws URISyntaxException;
 
     Resource<T> update(Long id, T entity);
 

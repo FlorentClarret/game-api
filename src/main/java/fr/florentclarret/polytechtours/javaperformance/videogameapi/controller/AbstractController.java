@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public abstract class AbstractController<T extends BaseEntity, U extends EntityService<T>> implements Controller<T> {
 
@@ -45,9 +49,14 @@ public abstract class AbstractController<T extends BaseEntity, U extends EntityS
 
     @Override
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Resource<T> create(@RequestBody final T entity) {
+    public ResponseEntity<Resource<T>> create(@RequestBody final T entity,
+                                              final UriComponentsBuilder builder) throws URISyntaxException {
         logger.trace("Method [create] with entity [{}] called", entity);
-        return this.resourceAssembler.toResource(this.entityService.save(entity));
+        final Resource<T> resource =
+                resourceAssembler.toResource(this.entityService.save(entity));
+        return ResponseEntity
+                .created(new URI(resource.getId().expand().getHref()))
+                .body(resource);
     }
 
     @Override
