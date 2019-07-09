@@ -1,9 +1,9 @@
 package fr.florentclarret.polytechtours.javaperformance.videogameapi.service;
 
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.BaseEntity;
-import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.BusinessException;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.EntityNotFoundException;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.EntityWithNameAlreadyExistsException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.repository.BaseEntityRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public abstract class AbstractEntityService<T extends BaseEntity, U extends Base
         final List<T> entities = this.repository.findAll();
 
         if (CollectionUtils.isEmpty(entities)) {
-            throw new BusinessException("No entity found", HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException();
         }
 
         return entities;
@@ -29,13 +29,13 @@ public abstract class AbstractEntityService<T extends BaseEntity, U extends Base
 
     @Override
     public T findById(final Long id) {
-        return this.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
+        return this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id));
     }
 
     @Override
     public T save(final T entity) {
         this.repository.findByName(entity.getName()).ifPresent(s -> {
-            throw new BusinessException(String.format("The entity with name [%s] already exists", entity.getName()), HttpStatus.CONFLICT);
+            throw new EntityWithNameAlreadyExistsException(entity.getName());
         });
 
         return this.repository.save(entity);
@@ -44,23 +44,22 @@ public abstract class AbstractEntityService<T extends BaseEntity, U extends Base
     @Override
     public T update(final Long id, final T entity) {
         this.repository.findByName(entity.getName()).ifPresent(s -> {
-            throw new BusinessException(String.format("The entity with name [%s] already exists", entity.getName()), HttpStatus.CONFLICT);
+            throw new EntityWithNameAlreadyExistsException(entity.getName());
         });
 
-        final T oldEntity = this.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
+        final T oldEntity = this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id));
         oldEntity.setName(entity.getName());
-
         return this.repository.save(oldEntity);
     }
 
     @Override
     public void delete(final Long id) {
-        this.repository.delete(this.repository.findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND)));
+        this.repository.delete(this.repository.findById(id).orElseThrow(() -> new EntityNotFoundException(id)));
     }
 
     @Override
     public T findByName(final String name) {
-        return this.repository.findByName(name).orElseThrow(() -> new BusinessException(String.format("The entity with name [%s] already exists", name), HttpStatus.CONFLICT));
+        return this.repository.findByName(name).orElseThrow(() -> new EntityWithNameAlreadyExistsException(name));
     }
 
     protected U getRepository() {

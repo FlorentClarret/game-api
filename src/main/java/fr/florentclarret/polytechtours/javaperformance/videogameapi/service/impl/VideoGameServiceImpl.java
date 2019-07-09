@@ -4,10 +4,11 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Platf
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.Publisher;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.VideoGame;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.BusinessException;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.EntityNotFoundException;
+import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.EntityWithNameAlreadyExistsException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.repository.VideoGameRepository;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.AbstractEntityService;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.service.VideoGameService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -29,10 +30,10 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
     @Override
     public VideoGame update(final Long id, final VideoGame entity) {
         super.getRepository().findByName(entity.getName()).ifPresent(s -> {
-            throw new BusinessException(String.format("The entity with name [%s] already exists", entity.getName()), HttpStatus.CONFLICT);
+            throw new EntityWithNameAlreadyExistsException(entity.getName());
         });
 
-        final VideoGame oldEntity = super.getRepository().findById(id).orElseThrow(() -> new BusinessException(String.format("Entity with id [%d] not found", id), HttpStatus.NOT_FOUND));
+        final VideoGame oldEntity = super.getRepository().findById(id).orElseThrow(() -> new EntityNotFoundException(id));
 
         if (entity.getName() != null) {
             oldEntity.setName(entity.getName());
@@ -62,7 +63,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         final List<VideoGame> videoGames = super.getRepository().findByPublisherId(id);
 
         if (CollectionUtils.isEmpty(videoGames)) {
-            throw new BusinessException(String.format("No game found for publisher with id [%s]", id), HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException(String.format("No game found for publisher with id [%s]", id));
         }
 
         return videoGames;
@@ -73,7 +74,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         final List<VideoGame> videoGames = super.getRepository().findByPlatformId(id);
 
         if (CollectionUtils.isEmpty(videoGames)) {
-            throw new BusinessException(String.format("No game found for platform with id [%s]", id), HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException(String.format("No game found for platform with id [%s]", id));
         }
 
         return videoGames;
@@ -86,7 +87,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         if (videoGame.getPublisher() != null) {
             return videoGame.getPublisher();
         } else {
-            throw new BusinessException(String.format("No publisher found for game with id [%s]", gameId), HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException(String.format("No publisher found for game with id [%s]", gameId));
         }
     }
 
@@ -97,7 +98,7 @@ public final class VideoGameServiceImpl extends AbstractEntityService<VideoGame,
         if (videoGame.getPlatform() != null) {
             return videoGame.getPlatform();
         } else {
-            throw new BusinessException(String.format("No platform found for game with id [%s]", gameId), HttpStatus.NOT_FOUND);
+            throw new EntityNotFoundException(String.format("No platform found for game with id [%s]", gameId));
         }
     }
 
