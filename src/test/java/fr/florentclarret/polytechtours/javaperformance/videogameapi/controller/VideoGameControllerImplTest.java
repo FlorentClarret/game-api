@@ -168,8 +168,8 @@ public class VideoGameControllerImplTest {
         videoGame.setCriticScore("12");
         videoGame.setUserScore("13");
         videoGame.setGlobalSales("14");
-        this.mockMvc.perform(put("/api/v1.0/videogame/1").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+        final MvcResult mvcResult = this.mockMvc.perform(put("/api/v1.0/videogame/1").content(OBJECT_MAPPER.writeValueAsString(videoGame)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("name", is("game666")))
                 .andExpect(jsonPath("year", is(2012)))
                 .andExpect(jsonPath("criticScore", is("12")))
@@ -180,7 +180,9 @@ public class VideoGameControllerImplTest {
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/videogame/1")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/videogame/")))
                 .andExpect(jsonPath("_links.publisher.href", is("http://localhost/api/v1.0/videogame/1/publisher")))
-                .andExpect(jsonPath("_links.platform.href", is("http://localhost/api/v1.0/videogame/1/platform")));
+                .andExpect(jsonPath("_links.platform.href", is("http://localhost/api/v1.0/videogame/1/platform"))).andReturn();
+        Assert.assertEquals("http://localhost/api/v1.0/videogame/1", mvcResult.getResponse().getHeader("Location"));
+        Assert.assertEquals("http://localhost/api/v1.0/videogame/1", mvcResult.getResponse().getRedirectedUrl());
     }
 
     @Test

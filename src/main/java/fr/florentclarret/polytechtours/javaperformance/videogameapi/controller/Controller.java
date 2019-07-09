@@ -16,7 +16,7 @@ public interface Controller<T extends BaseEntity> {
 
     ResponseEntity<Resource<T>> create(T entity, UriComponentsBuilder builder) throws URISyntaxException;
 
-    Resource<T> update(Long id, T entity);
+    ResponseEntity<Resource<T>> update(Long id, T entity) throws URISyntaxException;
 
     ResponseEntity<Void> delete(Long id);
 }

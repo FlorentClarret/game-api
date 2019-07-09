@@ -111,14 +111,16 @@ public class PlatformControllerImplTest {
     public void testPut() throws Exception {
         final Platform platform = new Platform();
         platform.setName("platform666");
-        this.mockMvc.perform(put("/api/v1.0/platform/1").content(OBJECT_MAPPER.writeValueAsString(platform)).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isOk())
+        final MvcResult mvcResult = this.mockMvc.perform(put("/api/v1.0/platform/1").content(OBJECT_MAPPER.writeValueAsString(platform)).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.ALL)).andDo(print()).andExpect(status().isCreated())
                 .andExpect(jsonPath("name", is("platform666")))
                 .andExpect(jsonPath("updateDate").isNotEmpty())
                 .andExpect(jsonPath("createDate").isNotEmpty())
                 .andExpect(jsonPath("_links.self.href", is("http://localhost/api/v1.0/platform/1")))
                 .andExpect(jsonPath("_links.all.href", is("http://localhost/api/v1.0/platform/")))
-                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/1/videogame")));
+                .andExpect(jsonPath("_links.videogame.href", is("http://localhost/api/v1.0/platform/1/videogame"))).andReturn();
+        Assert.assertEquals("http://localhost/api/v1.0/platform/1", mvcResult.getResponse().getHeader("Location"));
+        Assert.assertEquals("http://localhost/api/v1.0/platform/1", mvcResult.getResponse().getRedirectedUrl());
     }
 
     @Test

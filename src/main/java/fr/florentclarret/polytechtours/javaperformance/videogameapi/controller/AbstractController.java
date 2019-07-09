@@ -61,9 +61,12 @@ public abstract class AbstractController<T extends BaseEntity, U extends EntityS
 
     @Override
     @PutMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Resource<T> update(@PathVariable final Long id, @RequestBody final T entity) {
+    public ResponseEntity<Resource<T>> update(@PathVariable final Long id, @RequestBody final T entity) throws URISyntaxException {
         logger.trace("Method [update] with entity [{}] on id [{}] called", entity, id);
-        return this.resourceAssembler.toResource(this.entityService.update(id, entity));
+        final Resource<T> resource = this.resourceAssembler.toResource(this.entityService.update(id, entity));
+        return ResponseEntity
+                .created(new URI(resource.getId().expand().getHref()))
+                .body(resource);
     }
 
     @Override
