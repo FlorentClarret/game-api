@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,8 +48,7 @@ public abstract class AbstractController<T extends BaseEntity, U extends EntityS
 
     @Override
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Resource<T>> create(@RequestBody final T entity,
-                                              final UriComponentsBuilder builder) throws URISyntaxException {
+    public ResponseEntity<Resource<T>> create(@RequestBody final T entity) throws URISyntaxException {
         logger.trace("Method [create] with entity [{}] called", entity);
         final Resource<T> resource =
                 resourceAssembler.toResource(this.entityService.save(entity));
