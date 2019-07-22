@@ -47,6 +47,13 @@ public abstract class AbstractController<T extends BaseEntity, U extends EntityS
     }
 
     @Override
+    @GetMapping(path = "random", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Resource<T> random() {
+        logger.trace("Method [random] called");
+        return this.resourceAssembler.toResource(this.entityService.findRandom());
+    }
+
+    @Override
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resource<T>> create(@RequestBody final T entity) throws URISyntaxException {
         logger.trace("Method [create] with entity [{}] called", entity);

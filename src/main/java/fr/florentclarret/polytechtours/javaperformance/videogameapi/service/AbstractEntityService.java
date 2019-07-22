@@ -4,6 +4,7 @@ import fr.florentclarret.polytechtours.javaperformance.videogameapi.entity.BaseE
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.EntityNotFoundException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.exception.EntityWithNameAlreadyExistsException;
 import fr.florentclarret.polytechtours.javaperformance.videogameapi.repository.BaseEntityRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -60,6 +61,11 @@ public abstract class AbstractEntityService<T extends BaseEntity, U extends Base
     @Override
     public T findByName(final String name) {
         return this.repository.findByName(name).orElseThrow(() -> new EntityWithNameAlreadyExistsException(name));
+    }
+
+    @Override
+    public T findRandom() {
+        return this.repository.findAll(PageRequest.of((int) (Math.random() * this.repository.count()), 1)).getContent().get(0);
     }
 
     protected U getRepository() {

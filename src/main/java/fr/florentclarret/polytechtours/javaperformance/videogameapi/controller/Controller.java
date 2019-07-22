@@ -13,6 +13,8 @@ public interface Controller<T extends BaseEntity> {
 
     Resources<Resource<T>> all();
 
+    Resource<T> random();
+
     ResponseEntity<Resource<T>> create(T entity) throws URISyntaxException;
 
     ResponseEntity<Resource<T>> update(Long id, T entity) throws URISyntaxException;

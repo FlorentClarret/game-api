@@ -47,6 +47,17 @@ public class PlatformControllerImplTest {
     }
 
     @Test
+    public void testGetRandomPlatform() throws Exception {
+        this.mockMvc.perform(get("/api/v1.0/platform/random")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name").isNotEmpty())
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href").isNotEmpty())
+                .andExpect(jsonPath("_links.all.href").isNotEmpty())
+                .andExpect(jsonPath("_links.videogame.href").isNotEmpty());
+    }
+
+    @Test
     public void testGetUnknownPlatform() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/platform/666")).andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string("Entity with id [666] not found"));

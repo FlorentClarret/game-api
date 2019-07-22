@@ -76,6 +76,18 @@ public class VideoGameControllerImplTest {
     }
 
     @Test
+    public void testGetRandomPublisherGame() throws Exception {
+        this.mockMvc.perform(get("/api/v1.0/videogame/random")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name").isNotEmpty())
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href").isNotEmpty())
+                .andExpect(jsonPath("_links.all.href").isNotEmpty())
+                .andExpect(jsonPath("_links.platform.href").isNotEmpty())
+                .andExpect(jsonPath("_links.publisher.href").isNotEmpty());
+    }
+
+    @Test
     public void testGetAllGames() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/videogame/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.videoGameList", hasSize(3)))

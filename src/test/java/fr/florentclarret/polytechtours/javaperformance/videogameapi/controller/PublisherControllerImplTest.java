@@ -64,6 +64,17 @@ public class PublisherControllerImplTest {
     }
 
     @Test
+    public void testGetRandomPublisher() throws Exception {
+        this.mockMvc.perform(get("/api/v1.0/publisher/random")).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("name").isNotEmpty())
+                .andExpect(jsonPath("updateDate").isNotEmpty())
+                .andExpect(jsonPath("createDate").isNotEmpty())
+                .andExpect(jsonPath("_links.self.href").isNotEmpty())
+                .andExpect(jsonPath("_links.all.href").isNotEmpty())
+                .andExpect(jsonPath("_links.videogame.href").isNotEmpty());
+    }
+
+    @Test
     public void testGetAllPublishers() throws Exception {
         this.mockMvc.perform(get("/api/v1.0/publisher/")).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.publisherList", hasSize(2)))

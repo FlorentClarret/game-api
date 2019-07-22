@@ -16,4 +16,6 @@ public interface EntityService<T extends BaseEntity> {
     void delete(Long id);
 
     T findByName(String name);
+
+    T findRandom();
 }
