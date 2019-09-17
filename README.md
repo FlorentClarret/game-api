@@ -38,29 +38,29 @@ I provide three different webservices to manager video games, publishers and pla
 
 #### Video games
 
-* URL :  /api/V1.0/videogame/
+* URL :  /api/v1.0/videogame/
     * Methods : GET / POST / PUT
-* URL :  /api/V1.0/videogame/{gameId}
+* URL :  /api/v1.0/videogame/{gameId}
     * Methods : GET / POST / PUT / DELETE
-* URL :  /api/V1.0/videogame/{gameId}/publisher
+* URL :  /api/v1.0/videogame/{gameId}/publisher
     * Methods : GET / POST / DELETE 
-* URL :  /api/V1.0/videogame/{gameId}/platform
+* URL :  /api/v1.0/videogame/{gameId}/platform
     * Methods : GET / POST / DELETE
     
 #### Publishers
 
-* URL :  /api/V1.0/publisher/
+* URL :  /api/v1.0/publisher/
     * Methods : GET / POST / PUT
-* URL :  /api/V1.0/publisher/{publisherId}
+* URL :  /api/v1.0/publisher/{publisherId}
     * Methods : GET / POST / PUT / DELETE
-* URL :  /api/V1.0/publisher/{publisherId}/videogame
+* URL :  /api/v1.0/publisher/{publisherId}/videogame
     * Methods : GET
 
 #### Platforms
 
-* URL :  /api/V1.0/platform/
+* URL :  /api/v1.0/platform/
     * Methods : GET / POST / PUT
-* URL :  /api/V1.0/platform/{platformId}
+* URL :  /api/v1.0/platform/{platformId}
     * Methods : GET / POST / PUT / DELETE
-* URL :  /api/V1.0/platform/{platformId}/videogame
+* URL :  /api/v1.0/platform/{platformId}/videogame
     * Methods : GET 
