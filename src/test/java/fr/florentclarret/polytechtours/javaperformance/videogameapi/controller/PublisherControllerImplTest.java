@@ -123,7 +123,7 @@ public class PublisherControllerImplTest {
     public void testPutEntityNotFound() throws Exception {
         final Publisher publisher = new Publisher();
         publisher.setName("publisher666");
-        this.mockMvc.perform(put("/api/v1.0/platform/666").content(OBJECT_MAPPER.writeValueAsString(publisher)).contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(put("/api/v1.0/publisher/666").content(OBJECT_MAPPER.writeValueAsString(publisher)).contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.ALL)).andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string("Entity with id [666] not found"));
     }
@@ -153,7 +153,7 @@ public class PublisherControllerImplTest {
 
     @Test
     public void testDelete() throws Exception {
-        this.mockMvc.perform(delete("/api/v1.0/platform/2")).andDo(print()).andExpect(status().isNoContent());
+        this.mockMvc.perform(delete("/api/v1.0/publisher/2")).andDo(print()).andExpect(status().isNoContent());
     }
 
     @Test
